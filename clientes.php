@@ -7,14 +7,14 @@ $con = new PDO("mysql:host=localhost; dbname=appointment", "root", "dExter@2313"
 /* MUESTRA UN REGISTRO */
 if ($_SERVER["REQUEST_METHOD"]=="GET"){	
  	if(isset($_GET["dni"]) && isset($_GET["correo"])){
-		$stmt = $con->prepare("SELECT * FROM clientes WHERE dni = :dni");
+		$stmt = $con->prepare("SELECT * FROM clientes WHERE dni = :dni AND correo=:correo");
 		$stmt->bindParam(":dni", $_GET["dni"], PDO::PARAM_STR);
 		$stmt->execute();
 		$results = $stmt->fetch();
 		exit (json_encode($results,JSON_UNESCAPED_UNICODE));
-	}else 	if(isset($_GET["dni"])){
-		$stmt = $con->prepare("SELECT * FROM clientes WHERE dni = :dni ");
-		$stmt->bindParam(":dni", $_GET["dni"], PDO::PARAM_STR);
+	}else 	if(isset($_GET["idclientes"])){
+		$stmt = $con->prepare("SELECT * FROM clientes WHERE idclientes = :idclientes ");
+		$stmt->bindParam(":idclientes", $_GET["idclientes"], PDO::PARAM_STR);
 		$stmt->execute();
 		$results = $stmt->fetch();
 		exit (json_encode($results,JSON_UNESCAPED_UNICODE));
@@ -24,17 +24,20 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 		$stmt->execute();
 		$results = $stmt->fetch();
 		exit (json_encode($results,JSON_UNESCAPED_UNICODE));
+		
+		
+		
 	}else 	if(isset($_GET["todos"])){
 		$stmt = $con->prepare("SELECT * FROM clientes");
 		$stmt->execute();
 	    if($stmt->execute()){
-        $json="{\"data\":";
+        $json="";
         while($row = $stmt->fetchAll()){
             $json=$json.json_encode($row);
             $json=$json.",";
         }
         $json=substr(trim($json),0,-1);
-        $json=$json."}";
+        $json=$json."";
     }
     echo $json;	
 	}
@@ -44,13 +47,14 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 /*INSERTAR UN REGISTRO*/
 } else if ($_SERVER["REQUEST_METHOD"]=="POST"){
 	if($_POST["insertar"]=="insertar"){
-		$stmt = $con->prepare("INSERT INTO clientes ( correo, dni, direccion, nombreapellido, img, celular) VALUES (:correo, :dni, :direccion, :nombreapellido, :img, :celular);");
+		$stmt = $con->prepare("INSERT INTO clientes ( correo, dni, direccion, nombreapellido, img, celular, TokenID) VALUES (:correo, :dni, :direccion, :nombreapellido, :img, :celular, :TokenID);");
 	$stmt->bindParam(":correo", $_POST["correo"], PDO::PARAM_STR);
 	$stmt->bindParam(":direccion", $_POST["direccion"], PDO::PARAM_STR);
 	$stmt->bindParam(":nombreapellido", $_POST["nombreapellido"], PDO::PARAM_STR);
 	$stmt->bindParam(":img", $_POST["img"], PDO::PARAM_STR);
 	$stmt->bindParam(":celular", $_POST["celular"], PDO::PARAM_STR);
 	$stmt->bindParam(":dni", $_POST["dni"], PDO::PARAM_STR);
+	$stmt->bindParam(":TokenID", $_POST["TokenID"], PDO::PARAM_STR);
 
 
 	if($stmt->execute()){
@@ -68,13 +72,15 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 exit (json_encode($results,JSON_UNESCAPED_UNICODE));
 /*MODIFICAR UN REGISTRO*/
 }else if($_POST["modificar"]=="modificar"){
-	$stmt = $con->prepare("UPDATE clientes SET correo=:correo, dni=:dni, direccion=:direccion, nombreapellido=:nombreapellido, celular=:celular , img=:img WHERE dni = :dni");
+	$stmt = $con->prepare("UPDATE clientes SET correo=:correo, dni=:dni, direccion=:direccion, nombreapellido=:nombreapellido, celular=:celular , img=:img, TokenID=:TokenID WHERE idclientes = :idclientes");
 	$stmt->bindParam(":correo", $_POST["correo"], PDO::PARAM_STR);
 	$stmt->bindParam(":direccion", $_POST["direccion"], PDO::PARAM_STR);
 	$stmt->bindParam(":nombreapellido", $_POST["nombreapellido"], PDO::PARAM_STR);
 	$stmt->bindParam(":img", $_POST["img"], PDO::PARAM_STR);
 	$stmt->bindParam(":celular", $_POST["celular"], PDO::PARAM_STR);
 	$stmt->bindParam(":dni", $_POST["dni"], PDO::PARAM_STR);
+	$stmt->bindParam(":TokenID", $_POST["TokenID"], PDO::PARAM_STR);
+	$stmt->bindParam(":idclientes", $_POST["idclientes"], PDO::PARAM_STR);
 
 
 	if($stmt->execute()){

@@ -18,13 +18,13 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 		$stmt->bindParam(":pacientedni", $_GET["pacientedni"], PDO::PARAM_STR);
 		$stmt->execute();
 	    if($stmt->execute()){
-        $json="{\"data\":";
+        $json="";
         while($row = $stmt->fetchAll()){
             $json=$json.json_encode($row);
             $json=$json.",";
         }
         $json=substr(trim($json),0,-1);
-        $json=$json."}";
+        $json=$json."";
     }
     echo $json;	
 	}else 	if(isset($_GET["profecionalemail"])){
@@ -32,13 +32,13 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 		$stmt->bindParam(":profecionalemail", $_GET["profecionalemail"], PDO::PARAM_STR);
 		$stmt->execute();
 	    if($stmt->execute()){
-        $json="{\"data\":";
+        $json="";
         while($row = $stmt->fetchAll()){
             $json=$json.json_encode($row);
             $json=$json.",";
         }
         $json=substr(trim($json),0,-1);
-        $json=$json."}";
+        $json=$json."";
     }
     echo $json;	
 	}else 	if(isset($_GET["especialidad"])){
@@ -62,12 +62,13 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 /*INSERTAR UN REGISTRO*/
 } else if ($_SERVER["REQUEST_METHOD"]=="POST"){
 	if($_POST["insertar"]=="insertar"){
-		$stmt = $con->prepare("INSERT INTO enlace (  profecionalemail, pacientedni, especialidad, estadoprofecional, nombreprofesional) VALUES ( :profecionalemail, :pacientedni, :especialidad, :estadoprofecional, :nombreprofesional);");
+		$stmt = $con->prepare("INSERT INTO enlace (  profecionalemail, pacientedni, especialidad, estadoprofecional, nombreprofesional, nombrecliente) VALUES ( :profecionalemail, :pacientedni, :especialidad, :estadoprofecional, :nombreprofesional, :nombrecliente);");
 	$stmt->bindParam(":profecionalemail", $_POST["profecionalemail"], PDO::PARAM_STR);
 	$stmt->bindParam(":pacientedni", $_POST["pacientedni"], PDO::PARAM_STR);
 	$stmt->bindParam(":especialidad", $_POST["especialidad"], PDO::PARAM_STR);
 	$stmt->bindParam(":estadoprofecional", $_POST["estadoprofecional"], PDO::PARAM_STR);
 	$stmt->bindParam(":nombreprofesional", $_POST["nombreprofesional"], PDO::PARAM_STR);
+		$stmt->bindParam(":nombrecliente", $_POST["nombrecliente"], PDO::PARAM_STR);
 
 
 	if($stmt->execute()){
@@ -83,12 +84,14 @@ exit (json_encode($results,JSON_UNESCAPED_UNICODE));
 
 /*MODIFICAR UN REGISTRO*/
 	}else if($_POST["modificar"]=="modificar"){
-		$stmt = $con->prepare("UPDATE enlace SET  profecionalemail=:profecionalemail, pacientedni=:pacientedni, especialidad=:especialidad , estadoprofecional=:estadoprofecional, nombreprofesional=:nombreprofesional WHERE pacientedni = :pacientedni AND profecionalemail = :profecionalemail");
+		$stmt = $con->prepare("UPDATE enlace SET  profecionalemail=:profecionalemail, pacientedni=:pacientedni, especialidad=:especialidad , estadoprofecional=:estadoprofecional, nombreprofesional=:nombreprofesional, nombrecliente=:nombrecliente WHERE pacientedni = :pacientedni AND profecionalemail = :profecionalemail");
 		$stmt->bindParam(":profecionalemail", $_POST["profecionalemail"], PDO::PARAM_STR);
 		$stmt->bindParam(":pacientedni", $_POST["pacientedni"], PDO::PARAM_STR);
 		$stmt->bindParam(":especialidad", $_POST["especialidad"], PDO::PARAM_STR);
 		$stmt->bindParam(":estadoprofecional", $_POST["estadoprofecional"], PDO::PARAM_STR);
 		$stmt->bindParam(":nombreprofesional", $_POST["nombreprofesional"], PDO::PARAM_STR);
+		$stmt->bindParam(":nombrecliente", $_POST["nombrecliente"], PDO::PARAM_STR);
+		
 		if($stmt->execute()){
 		$stmt = $con->prepare("SELECT * FROM enlace WHERE pacientedni = :pacientedni AND profecionalemail = :profecionalemail");
 		$stmt->bindParam(":pacientedni", $_POST["pacientedni"], PDO::PARAM_STR);

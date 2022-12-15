@@ -76,7 +76,12 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
 
 
 	if($stmt->execute()){
-		$results = "ok";
+		$stmt = $con->prepare("SELECT * FROM turno WHERE correoprofesional = :correoprofesional AND fecha = :fecha AND dni = :dni ");
+		$stmt->bindParam(":correoprofesional", $_POST["correoprofesional"], PDO::PARAM_STR);
+		$stmt->bindParam(":dni", $_POST["dni"], PDO::PARAM_STR);
+		$stmt->bindParam(":fecha", $_POST["fecha"], PDO::PARAM_STR);
+		$stmt->execute();
+		$results = $stmt->fetch();
 	} else {
 		$results = "error";
 	}
@@ -124,7 +129,12 @@ exit (json_encode($results,JSON_UNESCAPED_UNICODE));
 
 
 	if($stmt->execute()){
-		$results = "ok";
+		$stmt = $con->prepare("SELECT * FROM turno WHERE correoprofesional = :correoprofesional AND fecha = :fecha AND dni = :dni ");
+		$stmt->bindParam(":correoprofesional", $_POST["correoprofesional"], PDO::PARAM_STR);
+		$stmt->bindParam(":dni", $_POST["dni"], PDO::PARAM_STR);
+		$stmt->bindParam(":fecha", $_POST["fecha"], PDO::PARAM_STR);
+		$stmt->execute();
+		$results = $stmt->fetch();
 	} else {
 		$results = "error";
 	}
