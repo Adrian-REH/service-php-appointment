@@ -9,4 +9,4 @@
 
 ## Diagrama de API
 
-![Diagram](https://github.com/Adrian-REH/APIappointment/blob/main/Diagrama%20sin%20título.drawio.png)
+![Diagram](https://github.com/Adrian-REH/APIappointment/blob/main/Diagrama%20sin%20título-Página-2.drawio.png)
