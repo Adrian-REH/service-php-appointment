@@ -8,7 +8,7 @@ Comunicacion de Appointment con el servidor
 </br>
    
 ### Diagrama de base de datos
-![Diagram](https://github.com/Adrian-REH/APIappointment/blob/main/Diagrama%20sin%20título.drawio.png)
+![Diagram](https://github.com/Adrian-REH/APIappointment/blob/main/Diagrama%20sin%20título-Page-1.drawio.png)
 
 ### Diagrama de API
 
